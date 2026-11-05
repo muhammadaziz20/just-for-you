@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Karta o‘yini</title>
+    <style>
+        :root {
+            color-scheme: dark
+        }
+
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            -webkit-user-select: none;
+            user-select: none
+        }
+
+        #st {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 576px;
+            height: 1280px;
+            overflow: hidden;
+            transform-origin: center;
+            background: #000
+        }
+
+        #world {
+            position: absolute;
+            inset: 0
+        }
+
+        #felt {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 45px;
+            bottom: 0;
+            background: radial-gradient(ellipse at 50% 40%, #213a54, #17293d 75%), repeating-radial-gradient(circle at 20% 30%, rgba(255, 255, 255, .02) 0 1px, transparent 1px 3px)
+        }
+
+        .a {
+            position: absolute
+        }
+
+        #topbar {
+            left: 0;
+            top: 45px;
+            width: 576px;
+            height: 76px;
+            background: rgba(0, 0, 0, .28)
+        }
+
+        #topbar .l {
+            left: 8px;
+            top: 8px;
+            font-size: 34px;
+            color: #8797a6
+        }
+
+        #topbar .r {
+            right: 44px;
+            top: 8px;
+            font-size: 34px;
+            color: #fff
+        }
+
+        #topbar .m {
+            right: 8px;
+            top: 16px;
+            width: 24px;
+            height: 24px;
+            background: #9bc261;
+            border-radius: 4px
+        }
+
+        #conn {
+            left: 110px;
+            top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            font-size: 24px;
+            transition: opacity .4s
+        }
+
+        #conn i {
+            width: 44px;
+            height: 44px;
+            border: 6px solid #8d98a2;
+            border-top-color: #2a3a4b;
+            border-radius: 50%;
+            animation: sp 1s linear infinite;
+            box-sizing: border-box
+        }
+
+        @keyframes sp {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .card {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 175px;
+            height: 245px;
+            transition: transform .9s cubic-bezier(.25, .6, .25, 1)
+        }
+
+        .inner {
+            position: absolute;
+            inset: 0;
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+            overflow: hidden;
+            transition: transform .32s ease;
+            font-family: 'Arial Narrow', Arial, sans-serif
+        }
+
+        .back .inner {
+            background: repeating-linear-gradient(45deg, rgba(110, 180, 145, .6) 0 9px, transparent 9px 18px), repeating-linear-gradient(-45deg, rgba(225, 150, 150, .5) 0 9px, transparent 9px 18px), #f4efe4;
+            box-shadow: inset 0 0 0 6px #fff, 0 3px 9px rgba(0, 0, 0, .5)
+        }
+
+        .ix {
+            position: absolute;
+            left: 12px;
+            top: 6px;
+            line-height: 1
+        }
+
+        .ix b {
+            font-size: 54px
+        }
+
+        .ix sup {
+            font-size: 23px;
+            position: relative;
+            top: 4px;
+            margin-left: 2px;
+            vertical-align: top
+        }
+
+        .ix i {
+            display: block;
+            font-style: normal;
+            font-size: 36px;
+            margin-top: -6px
+        }
+
+        @keyframes gl {
+            50% {
+                box-shadow: 0 0 0 4px #7ac142, 0 0 22px #7ac142
+            }
+        }
+
+        .hl .inner {
+            animation: gl 1.3s ease-in-out infinite
+        }
+
+        .pip {
+            position: absolute;
+            font-size: 48px;
+            line-height: 1;
+            transform: translate(-50%, -50%)
+        }
+
+        .pip.f {
+            transform: translate(-50%, -50%) rotate(180deg)
+        }
+
+        .fig {
+            position: absolute;
+            left: 44px;
+            top: 72px;
+            width: 126px;
+            height: 168px
+        }
+
+        .ph {
+            position: absolute;
+            inset: 9px;
+            border-radius: 9px;
+            overflow: hidden
+        }
+
+        .ph img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 2
+        }
+
+        .ph .pl {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            color: #fff;
+            font: 700 18px Arial;
+            letter-spacing: 1px
+        }
+
+        .ph svg {
+            width: 80%
+        }
+
+        .edge {
+            position: absolute;
+            inset: 0;
+            border-radius: 14px;
+            box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .08);
+            z-index: 3
+        }
+
+        #emo {
+            left: 248px;
+            top: 112px;
+            width: 80px;
+            height: 80px;
+            border-radius: 14px;
+            background: rgba(10, 20, 30, .62);
+            font-size: 54px;
+            line-height: 80px;
+            text-align: center;
+            z-index: 80;
+            opacity: 0;
+            transform: scale(.3);
+            transition: opacity .5s ease, transform .65s cubic-bezier(.3, 1.5, .5, 1), left .8s ease, top .8s ease;
+            pointer-events: none
+        }
+
+        #emo.s {
+            opacity: 1;
+            transform: scale(1)
+        }
+
+        #emo.s.out {
+            opacity: 0;
+            transform: scale(.55) rotate(-10deg)
+        }
+
+        #hint {
+            left: 395px;
+            top: 360px;
+            width: 160px;
+            text-align: center;
+            color: #cfd8e0;
+            font-size: 17px;
+            line-height: 43px;
+            transition: opacity .3s
+        }
+
+        .cnt {
+            color: #fff;
+            font-size: 34px;
+            text-align: center;
+            width: 140px
+        }
+
+        #money {
+            left: 38px;
+            top: 650px;
+            width: 122px;
+            height: 70px;
+            background: #b7d77a;
+            border-radius: 8px;
+            box-shadow: 0 0 0 4px #9dc060, 3px 5px 0 #7fa447;
+            color: #111;
+            font-size: 34px;
+            text-align: center;
+            line-height: 70px
+        }
+
+        #tri {
+            left: 258px;
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            opacity: .32;
+            transition: all .3s
+        }
+
+        #opp {
+            left: 248px;
+            top: 112px;
+            width: 80px;
+            height: 80px;
+            border-radius: 7px;
+            background: linear-gradient(#777, #444);
+            border: 3px solid transparent;
+            box-sizing: border-box;
+            overflow: hidden;
+            text-align: center;
+            font-size: 46px;
+            line-height: 76px;
+            filter: grayscale(1);
+            z-index: 30;
+            transition: border-color .3s
+        }
+
+        #opp span {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            font-size: 15px;
+            line-height: 17px;
+            color: #fff;
+            background: rgba(0, 0, 0, .5);
+            filter: none
+        }
+
+        #opp em {
+            position: absolute;
+            right: 3px;
+            top: 0;
+            color: #f0c030;
+            font: 700 12px/14px Arial;
+            filter: none
+        }
+
+        #opp.on {
+            border-color: #19b5a3;
+            box-shadow: 0 0 14px #19b5a3
+        }
+
+        #bar {
+            left: 0;
+            top: 1142px;
+            width: 576px;
+            height: 118px;
+            background: #fff;
+            border-radius: 28px 28px 0 0;
+            z-index: 50
+        }
+
+        #bar div,
+        #bar button {
+            position: absolute
+        }
+
+        #take {
+            left: 12px;
+            top: 14px;
+            width: 208px;
+            height: 78px;
+            border: 1px solid #ddd;
+            border-radius: 14px;
+            background: #fff;
+            color: #e0202a;
+            font-size: 46px;
+            transition: opacity .3s
+        }
+
+        #av {
+            left: 248px;
+            top: 12px;
+            width: 80px;
+            height: 80px;
+            border-radius: 9px;
+            background: #5b7684;
+            color: #fff;
+            text-align: center;
+            font-size: 56px;
+            line-height: 66px;
+            border: 5px solid #5b7684;
+            box-sizing: border-box;
+            transition: all .3s
+        }
+
+        #av.on {
+            border-color: #7ac142
+        }
+
+        #av span {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -3px;
+            font-size: 19px;
+            line-height: 20px
+        }
+
+        #pts {
+            left: 366px;
+            top: 46px;
+            font-size: 36px;
+            color: #8a8a8a
+        }
+
+        .sm {
+            font-size: 15px;
+            color: #777
+        }
+
+        #eye {
+            left: 512px;
+            top: 26px;
+            width: 52px;
+            height: 54px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            text-align: center;
+            line-height: 54px;
+            font-size: 28px
+        }
+
+        #home {
+            left: 200px;
+            top: 1266px;
+            width: 176px;
+            height: 5px;
+            border-radius: 3px;
+            background: #999;
+            z-index: 51
+        }
+
+        #msg {
+            left: 26px;
+            top: 66px;
+            width: 524px;
+            padding: 26px 14px 24px;
+            box-sizing: border-box;
+            text-align: center;
+            background: linear-gradient(rgba(8, 16, 28, .9), rgba(12, 24, 40, .92));
+            border: 2px solid #e8b84a;
+            border-radius: 24px;
+            box-shadow: 0 0 40px rgba(232, 184, 74, .4);
+            z-index: 60;
+            opacity: 0;
+            transform: translateY(-30px) scale(.94);
+            transition: all 1.3s ease;
+            pointer-events: none
+        }
+
+        #msg.show {
+            opacity: 1;
+            transform: none;
+            pointer-events: auto
+        }
+
+        #msg p {
+            margin: 8px 0;
+            color: #f4f1e8;
+            font: italic 27px/1.25 Georgia, serif;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: all 1.8s ease
+        }
+
+        #msg p.v {
+            opacity: 1;
+            transform: none
+        }
+
+        #msg p.big {
+            font: 700 40px/1.2 Georgia, serif;
+            font-style: normal;
+            color: #ffd35c;
+            text-shadow: 0 0 18px rgba(255, 200, 60, .6);
+            margin-top: 18px
+        }
+
+        #again {
+            margin-top: 10px;
+            background: none;
+            border: 1px solid #6b7b8c;
+            color: #9fb0c0;
+            border-radius: 20px;
+            padding: 6px 18px;
+            font-size: 15px;
+            opacity: 0;
+            transition: opacity 1s
+        }
+
+        #again.v {
+            opacity: 1
+        }
+
+        #flash {
+            inset: 0;
+            background: #fff;
+            opacity: 0;
+            z-index: 70;
+            pointer-events: none
+        }
+
+        #fx {
+            inset: 0;
+            z-index: 65;
+            pointer-events: none
+        }
+    </style>
+</head>
+
+<body>
+    <div id="st">
+        <div id="world">
+            <div id="felt" class="a"></div>
+            <div id="topbar" class="a"><span class="a l">89</span>
+                <div id="conn" class="a"><i></i>Connection to the server...</div><span class="a r">250</span><span
+                    class="a m"></span>
+            </div>
+            <svg class="a" style="left:200px;top:235px" width="180" height="50" viewBox="0 0 180 50">
+                <path d="M15 38 Q85 12 150 26" fill="none" stroke="#8a97a4" stroke-width="6" opacity=".45" />
+                <path d="M140 14 L160 28 L138 36 Z" fill="#8a97a4" opacity=".45" />
+            </svg>
+            <svg class="a" style="left:200px;top:745px" width="180" height="50" viewBox="0 0 180 50">
+                <path d="M165 12 Q95 38 30 24" fill="none" stroke="#8a97a4" stroke-width="6" opacity=".45" />
+                <path d="M40 12 L18 26 L40 36 Z" fill="#8a97a4" opacity=".45" />
+            </svg>
+            <div id="tri" class="a"></div>
+            <div class="a cnt" style="left:28px;top:368px">28</div>
+            <div id="deck"></div>
+            <div id="money" class="a">500</div>
+            <div id="hint" class="a"></div>
+            <div id="cards"></div>
+            <div id="opp" class="a">👶<em>45</em><span>ш....?</span></div>
+            <div id="emo" class="a"></div>
+            <div id="bar" class="a"><button id="take">I take</button>
+                <div id="av"><b style="font-weight:400">O</b><span>Odina</span></div>
+                <div id="pts">25</div>
+                <div class="sm" style="left:432px;top:84px">1 🟡</div>
+                <div class="sm" style="left:524px;top:4px">3 🟡</div>
+                <div id="eye">👁</div>
+                <div class="sm" style="left:494px;top:86px">1.52K</div>
+            </div>
+            <div id="home" class="a"></div>
+            <div id="msg" class="a">
+                <p>Menga afsuski mos kartalar yo‘q.</p>
+                <p>Garchi kartada omadli bo‘lmasam ham,</p>
+                <p>menda takrorlanmas kartalar bor.</p>
+                <p class="big">Tug‘ilgan kuningiz bilan! 🎂</p><button id="again" onclick="run()">↻ Qayta
+                    ko‘rish</button>
+            </div>
+            <canvas id="fx" class="a" width="576" height="1280"></canvas>
+            <div id="flash" class="a"></div>
+        </div>
+    </div>
+    <script>
+        // === SOZLAMALAR ===
+        // Rasmlarni shu HTML yoniga img1, img2, img3, img4 nomi bilan qo‘ying (jpg, jpeg, png yoki webp).
+        // Rasm topilmasa, o‘rniga bo‘sh joy (placeholder) ko‘rinadi.
+        const PHOTOS = ['img1', 'img2', 'img3', 'img4'];
+        const EXT = ['jpg', 'jpeg', 'png', 'webp', 'JPG', 'JPEG', 'PNG'];
+        function nx(e) {const k = (+e.dataset.k || 0) + 1; e.dataset.k = k; if (k < EXT.length) e.src = e.dataset.b + '.' + EXT[k]; else e.remove()}
+        // ===================
+        const $ = s => document.querySelector(s), sleep = ms => new Promise(r => setTimeout(r, ms));
+        const st = $('#st'), cards = $('#cards'), world = $('#world'), msg = $('#msg');
+        function fit() {st.style.transform = 'translate(-50%,-50%) scale(' + Math.min(innerWidth / 576, innerHeight / 1280) + ')'}
+        addEventListener('resize', fit); fit();
+        const SU = {H: ['♥', '#e0202a'], S: ['♠', '#111'], D: ['♦', '#1f6fd6'], C: ['♣', '#1c9a3c']};
+        const VAL = {6: 6, 7: 7, 8: 8, K: 40, Q: 20, J: 2};
+        function T(el, x, y, r = 0, s = 1) {el.style.transform = `translate(${x - 87.5}px,${y - 122.5}px) rotate(${r}deg) scale(${s})`}
+        function fig(rank, col) {
+            const q = rank === 'Q', j = rank === 'J', robe = q ? '#d83a3a' : j ? '#2f6fd0' : '#2f5fb0';
+            return `<svg class="fig" viewBox="0 0 100 130"><path d="M4 130 Q10 82 50 78 Q90 82 96 130Z" fill="${robe}"/><path d="M40 82 L50 100 L60 82Z" fill="#f2d27a"/>${q ? '<path d="M28 50 Q50 14 72 50 L80 112 L20 112Z" fill="#fff" opacity=".92"/>' : ''}<circle cx="50" cy="56" r="17" fill="#e8b890"/>${q || j ? '' : '<path d="M33 58 Q50 104 67 58 Q50 72 33 58Z" fill="#e4e4e4"/>'}<circle cx="43" cy="53" r="2" fill="#222"/><circle cx="57" cy="53" r="2" fill="#222"/>${j ? '<path d="M28 44 Q50 4 72 44Z" fill="#2a58c0"/><path d="M24 46 L76 46 L72 37 L28 37Z" fill="#1c3f8f"/>' : '<path d="M30 42 L33 20 L42 33 L50 14 L58 33 L67 20 L70 42Z" fill="#e8b020" stroke="#b07810" stroke-width="1.5"/>'}<circle cx="50" cy="94" r="5" fill="${col}"/></svg>`
+        }
+        const PIPS = {6: [[1, 55], [2, 55], [1, 122], [2, 122], [1, 190], [2, 190]]};
+        PIPS[7] = PIPS[6].concat([[0, 88]]); PIPS[8] = PIPS[6].concat([[0, 88], [0, 157]]);
+        function face(rank, suit) {
+            const [s, c] = SU[suit]; let h = `<div class="ix" style="color:${c}"><b>${rank}</b>${/[KQJ]/.test(rank) ? '<sup>' + VAL[rank] + '</sup>' : ''}<i>${s}</i></div>`;
+            if (PIPS[rank]) PIPS[rank].forEach(([k, y]) => {h += `<span class="pip${y > 122 ? ' f' : ''}" style="left:${[88, 56, 124][k]}px;top:${y + 14}px;color:${c}">${s}</span>`});
+            else h += fig(rank, c);
+            return h
+        }
+        const GR = ['#f6c453,#e4572e', '#6dd5ed,#2f6fd0', '#c471f5,#fa71cd', '#7be495,#1f8a70'];
+        function photo(i) {
+            return `<div class="ph" style="background:linear-gradient(160deg,${GR[i]})"><div class="pl"><svg viewBox="0 0 100 100"><circle cx="50" cy="36" r="20" fill="rgba(255,255,255,.85)"/><path d="M10 100 Q14 62 50 60 Q86 62 90 100Z" fill="rgba(255,255,255,.85)"/></svg>RASM ${i + 1}</div><img src="${PHOTOS[i]}.jpg" alt="" data-b="${PHOTOS[i]}" onerror="nx(this)"></div><div class="edge"></div>`
+        }
+        function mk() {const e = document.createElement('div'); e.className = 'card back'; e.innerHTML = '<div class="inner"></div>'; cards.appendChild(e); return e}
+        async function flip(el, html) {const i = el.firstChild; i.style.transform = 'scaleX(0)'; await sleep(330); el.classList.remove('back'); i.innerHTML = html; i.style.transform = 'scaleX(1)'}
+        function setFace(el, html) {el.classList.remove('back'); el.firstChild.innerHTML = html}
+        // statik elementlar
+        const dk = document.createElement('div'); dk.className = 'card back'; dk.innerHTML = '<div class="inner"></div>'; $('#deck').appendChild(dk); T(dk, 98, 517, 0, .81);
+        const tri = $('#tri'), hint = $('#hint'), av = $('#av'), opp = $('#opp'), take = $('#take'), pts = $('#pts');
+        function turn(w, h) {
+            const me = w === 'me'; av.classList.toggle('on', me); opp.classList.toggle('on', !me); take.style.opacity = me ? 1 : 0;
+            tri.style.top = me ? '700px' : '290px'; tri.style.borderTop = me ? '55px solid #fff' : '0'; tri.style.borderBottom = me ? '0' : '55px solid #fff';
+            hint.innerHTML = h || ''
+        }
+        function shake() {
+            world.animate([{transform: 'translate(0,0)'}, {transform: 'translate(-14px,9px)'}, {transform: 'translate(12px,-10px)'}, {transform: 'translate(-8px,6px)'}, {transform: 'translate(0,0)'}], {duration: 260});
+            const f = $('#flash'); f.animate([{opacity: .55}, {opacity: 0}], {duration: 240})
+        }
+        function confetti() {
+            const c = $('#fx'), x = c.getContext('2d'), P = [], cols = ['#ffd35c', '#ff5d73', '#5dd6ff', '#9bf06b', '#d18bff'];
+            for (let i = 0; i < 140; i++)P.push({x: Math.random() * 576, y: -Math.random() * 500, vx: Math.random() * 2 - 1, vy: 2 + Math.random() * 4, r: Math.random() * 6, s: 5 + Math.random() * 7, c: cols[i % 5]});
+            let n = 0; (function f() {x.clearRect(0, 0, 576, 1280); P.forEach(p => {p.x += p.vx; p.y += p.vy; p.r += .1; x.save(); x.translate(p.x, p.y); x.rotate(p.r); x.fillStyle = p.c; x.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); x.restore()}); if (++n < 420) requestAnimationFrame(f); else x.clearRect(0, 0, 576, 1280)})()
+        }
+        const emo = $('#emo');
+        let ek = 0;
+        async function pop(ch) {const k = ++ek; if (emo.classList.contains('s')) {emo.classList.add('out'); await sleep(300); if (k !== ek) return; emo.textContent = ch; emo.classList.remove('out')} else {emo.textContent = ch; emo.classList.add('s')} }
+        function hide() {ek++; emo.classList.remove('s', 'out')}
+        let rid = 0;
+        async function run() {
+            const id = ++rid, w = async ms => {await sleep(ms); if (id !== rid) throw 0};
+            try {
+                cards.innerHTML = ''; msg.classList.remove('show'); msg.querySelectorAll('p').forEach(p => p.classList.remove('v')); $('#again').classList.remove('v');
+                $('#fx').getContext('2d').clearRect(0, 0, 576, 1280); pts.textContent = 25; $('#conn').style.opacity = 1; turn('me', ''); emo.style.left = '248px'; emo.style.top = '112px'; hide();
+                let z = 1;
+
+                const H = [['8', 'H'], ['8', 'S'], ['J', 'S'], ['7', 'C']], hx = [90, 235, 380, 520], hr = [-7, -2, 3, 8], hy = [1055, 1038, 1038, 1055];
+                const hand = H.map((c, i) => {const e = mk(); setFace(e, face(...c)); e.style.transition = 'none'; T(e, hx[i], 1400, hr[i]); e.offsetWidth; e.style.transition = ''; e.style.zIndex = 10 + i; return e});
+                await w(600); hand.forEach((e, i) => T(e, hx[i], hy[i], hr[i]));
+                // opponent stack
+                const op = [0, 1, 2, 3].map(i => {const e = mk(); e.style.zIndex = 5; T(e, 288, 190, [-6, -2, 2, 6][i], .55); return e});
+                await w(2400); $('#conn').style.opacity = 0;
+                // qiz: 8♥, 8♠, K♠
+                const jit = [[-12, 8, 6], [14, -6, -10], [-4, 18, 12]];
+                for (let i = 0; i < 1; i++) {
+                    turn('me', 'Take 1 card<br>Play from hand'); await w(1600);
+                    const e = hand[i], [jx, jy, jr] = jit[i]; T(e, hx[i], hy[i] - 70, 0, 1.1); await w(550);
+                    e.style.zIndex = z++; T(e, 300 + jx, 525 + jy, jr, 1); pts.textContent = +pts.textContent - VAL[H[i][0]]; await w(1300);
+                }
+                const played = [true, false, false, false]; let busy = false;
+                const wig = e => e.firstChild.animate([{transform: 'translateX(0)'}, {transform: 'translateX(-12px)'}, {transform: 'translateX(10px)'}, {transform: 'translateX(-6px)'}, {transform: 'translateX(0)'}], {duration: 320});
+                const mark = () => hand.forEach((e, i) => e.classList.toggle('hl', (i === 1 && !played[1]) || (i === 2 && played[1] && !played[2])));
+                await new Promise(res => {
+                    mark();
+                    hand.forEach((e, i) => {
+                        if (!i) return; e.style.cursor = 'pointer'; e.onclick = async () => {
+                            if (id !== rid || busy || played[i]) return;
+                            if (!(i === 1 || (i === 2 && played[1]))) {wig(e); return }
+                            busy = true; played[i] = true; mark();
+                            const [jx, jy, jr] = jit[i]; T(e, hx[i], hy[i] - 70, 0, 1.1); await sleep(450);
+                            e.style.zIndex = z++; T(e, 300 + jx, 525 + jy, jr, 1); pts.textContent = +pts.textContent - VAL[H[i][0]];
+                            await sleep(1100); busy = false; if (i === 2) res();
+                        }
+                    });
+                });
+                hand.forEach(e => {e.onclick = null; e.style.cursor = ''});
+                turn('opp', ''); T(hand[3], 288, 1040, 0); await w(2000);
+                // raqib: kartalar yoyiladi
+                const sx = [92, 230, 368, 506], sr = [-9, -3, 3, 9];
+                pop('😣'); await w(2300); hide(); await w(700);
+                pop('😫'); await w(2300); hide(); await w(700);
+                pop('😥'); await w(2400);
+                pop('🤗'); await w(1300);
+                op.forEach((e, i) => {T(e, sx[i], 300, sr[i], .82)}); await w(1400);
+                for (let i = 0; i < 4; i++) {flip(op[i], photo(i)); await w(520)}
+                pop('😎');
+                await w(1500);
+                // shiddatli tashlash
+                const tg = [[282, 505, -16], [318, 540, 13], [290, 560, -7], [312, 512, 6]];
+                for (let i = 0; i < 4; i++) {
+                    const e = op[i]; e.style.zIndex = 100 + i; const f1 = [300, 240, 190, 150][i], f2 = [380, 300, 230, 170][i], gp = [700, 500, 340, 200][i]; e.style.transition = 'transform ' + f1 / 1000 + 's ease-in'; e.style.filter = 'blur(2px)';
+                    T(e, sx[i], 240, sr[i] + 40, 1.5); await w(f1);
+                    e.style.transition = 'transform ' + f2 / 1000 + 's cubic-bezier(.5,0,.9,.4)'; T(e, tg[i][0], tg[i][1], tg[i][2] + 360, 1.08); await w(f2);
+                    e.style.filter = ''; shake(); await w(gp);
+                }
+                await w(900);
+                await w(800); msg.classList.add('show'); confetti();
+                const ps = msg.querySelectorAll('p'); for (const p of ps) {await w(2100); p.classList.add('v')}
+                await w(1200); emo.style.left = '462px'; emo.style.top = '18px'; await w(600); pop('😍');
+                await w(2400); $('#again').classList.add('v');
+            } catch (e) {if (e !== 0) throw e}
+        }
+        run();
+    </script>
+</body>
+
+</html>
